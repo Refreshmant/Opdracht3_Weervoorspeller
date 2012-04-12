@@ -2,7 +2,7 @@
  * VisueelScherm.cpp
  *
  *  Created on: 11 mrt. 2012
- *      Author: acer
+ *      Author: Niek Zuure
  */
 
 #include "VisueelScherm.hpp"
@@ -13,21 +13,18 @@ VisueelScherm::VisueelScherm( WeerData* weerData )
 	this->weerData = weerData;
 
 	//ken font en skin toe
-	...
+//	...
 
 	//maak een achtergrond label om alle andere widgets in op te slaan, en te tonen
-	Label* achtergrond = ...
+	Label* achtergrond = new Label(0,0,50,50, NULL);
 
 	//maak een listbox met update en textueelknop
-	this->listBox = new ...
-
+	this->listBox = new ListBox();
 	//knop om data te updaten
-	this->updateKnop = new ...
+	this->updateKnop = new Button("update");
 
 	//knop om naar visueel te schakelen
-	this->textueelKnop = new ...
-
-
+	this->textueelKnop = new Button();
 
 	//staafdiagram
 
@@ -53,7 +50,7 @@ VisueelScherm::~VisueelScherm()
 void VisueelScherm::update()
 {
 	//update waarden vam weerdata
-	...
+	this.weerData->update();
 
 	//stel draw target in op onze tekening
 	maSetDrawTarget( this->diagramTekening );

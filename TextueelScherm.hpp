@@ -2,7 +2,7 @@
  * TextueelScherm.h
  *
  *  Created on: 11 mrt. 2012
- *      Author: acer
+ *      Author: Niek Zuure
  */
 
 #ifndef TEXTUEELSCHERM_HPP_
@@ -15,7 +15,6 @@
 
 #include <conprint.h>
 
-
 #include "WeerData.hpp"
 
 
@@ -25,6 +24,8 @@ using namespace MAUI;
 class TextueelScherm : public Screen
 {
 private:
+//	scherm info
+	int screenWidth, screenHeight;
 
 	//skin, font
 	WidgetSkin* skin;
@@ -35,8 +36,7 @@ private:
 
 	//standaard knoppenset bovenaan
 	ListBox* listBox;
-	Label* updateKnop;
-	Label* visueelKnop;
+	Label* updateKnop, visueelKnop;
 
 	//data van weer
 	WeerData* weerData;

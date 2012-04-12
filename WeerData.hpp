@@ -2,7 +2,7 @@
  * WeerData.h
  *
  *  Created on: 11 mrt. 2012
- *      Author: acer
+ *      Author: Niek Zuure
  */
 
 #ifndef WEERDATA_HPP_

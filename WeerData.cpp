@@ -2,11 +2,10 @@
  * WeerData.cpp
  *
  *  Created on: 11 mrt. 2012
- *      Author: acer
+ *      Author: Niek Zuure
  */
 
 #include "WeerData.hpp"
-
 
 //hulpfunctie
 char* zoekWoord(char* buffer, char* testString)
@@ -18,14 +17,11 @@ char* zoekWoord(char* buffer, char* testString)
 	{
 		return NULL;
 	}
-
 	else
-	{
-		//geef de positie terug achter de gevonden string
+	{	//geef de positie terug achter de gevonden string
 		return( myPos + strlen(testString) );
 	}
 }
-
 
 
 WeerData::WeerData() : HttpConnection( this )
@@ -42,7 +38,6 @@ WeerData::WeerData() : HttpConnection( this )
     {
         lprintfln( "unable to connect - %i\n", res );
     }
-
     else
     {
     	this->finish();
@@ -57,16 +52,10 @@ WeerData::WeerData() : HttpConnection( this )
 	}
 }
 
-WeerData::~WeerData()
-{
-
-}
-
-
 void WeerData::update()
 {
 	//update alleen als er niet momenteel al een update uitgevoerd wordt
-	if( this->isConnecting == false )
+	if( !this->isConnecting )
 	{
 		//stel de isConnecting boolean in op 'in gebruik'
 		this->isConnecting = true;
@@ -75,8 +64,6 @@ void WeerData::update()
 		this->connect( this->url );
 	}
 }
-
-
 
 
 void WeerData::httpFinished( HttpConnection* http, int result )
@@ -116,7 +103,6 @@ void WeerData::connRecvFinished( Connection* conn, int result )
         	this->zonneschijn[2] = atoi( data );
         }
 
-
         //zoek neerslagkans
         weerDataString = zoekWoord( weerDataRecv, "<td>Neerslagkans (%)</td>" );
 
@@ -137,7 +123,6 @@ void WeerData::connRecvFinished( Connection* conn, int result )
 			strncpy( data, weerDataString + 105, 2 );
         	this->neerslag[2] = atoi( data );
         }
-
 
         //zoek minimum temperatuur
         weerDataString = zoekWoord( weerDataRecv, "<td>Minimumtemperatuur (&deg;C)</td>" );
@@ -164,21 +149,14 @@ void WeerData::connRecvFinished( Connection* conn, int result )
         	return;
         }
 
-
         //lees de volgende 1024 bytes, deze functie wordt dan weer opnieuw aangeroepen
         this->recv(weerDataRecv, CONNECTION_BUFFER_SIZE);
     }
-
     else
     {
     	//fout is opgetreden of we hebben het eind van het document bereikt, sluit af.
     	this->close();
     }
-}
-
-
-void WeerData::connReadFinished( Connection* conn, int result )
-{
 }
 
 
@@ -188,4 +166,7 @@ void WeerData::connectFinished(Connection* conn, int result)
 	this->isConnecting = false;
 }
 
+void WeerData::connReadFinished( Connection* conn, int result ) {}
+
+WeerData::~WeerData() {}
 
