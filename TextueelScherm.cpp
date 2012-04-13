@@ -39,7 +39,7 @@ TextueelScherm::TextueelScherm( WeerData* weerData )
 	//knop om naar visueel scherm te schakelen
 	this->visueelKnop = new Label( 0, 0, listWidth/2, listHeight, NULL," Visueel ", 0, font);
 	this->visueelKnop->setSkin( this->skin );
-	listBox->add(visueelKniop);
+	listBox->add(visueelKnop);
 
 	//label veld voor weer data, beslaat de rest van het scherm (zie onder)
 	this->weerDataLabel = new Label(0, listHeight, screenWidth, screenHeight-listHeight, achtergrond, "", 0, font);
@@ -111,17 +111,16 @@ void TextueelScherm::pointerPressEvent( MAPoint2d maPoint )
 
 
 	//visueel knop is ingedrukt
-	if( this->visueelKnop->contains( point ) )
+	if( visueelKnop->contains( point ) )
 	{
-		this->visueelKnop->setSelected( true );
+		visueelKnop->setSelected(true);
 		this->hide();
 		this->toggleScherm->show();
 	}
 	else
+	{
 		this->visueelKnop->setSelected( false );
-
+	}
 }
 
 TextueelScherm::~TextueelScherm() {}
-
-

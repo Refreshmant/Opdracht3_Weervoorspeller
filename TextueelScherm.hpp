@@ -36,7 +36,8 @@ private:
 
 	//standaard knoppenset bovenaan
 	ListBox* listBox;
-	Label* updateKnop, visueelKnop;
+	Label* updateKnop;
+	Label* visueelKnop;
 
 	//data van weer
 	WeerData* weerData;

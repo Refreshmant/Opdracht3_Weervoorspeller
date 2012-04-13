@@ -25,6 +25,9 @@ using namespace MAUI;
 class VisueelScherm : public Screen
 {
 private:
+	// afmetingen van het scherm
+	int screenWidth;
+	int screenHeight;
 
 	//skin, font
 	WidgetSkin* skin;

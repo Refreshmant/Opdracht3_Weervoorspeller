@@ -9,22 +9,38 @@
 
 VisueelScherm::VisueelScherm( WeerData* weerData )
 {
+	//ophalen van de schermgrootte
+	MAExtent screenSize = maGetScrSize();
+
+	//bepaal grootte van het scherm
+	screenWidth = EXTENT_X( screenSize );
+	screenHeight = EXTENT_Y( screenSize );
+
+
 	//sla de weerdata op in het attribuut
 	this->weerData = weerData;
 
 	//ken font en skin toe
-//	...
+	this->font = new Font(RES_FONT);
+	this->skin = new WidgetSkin( RES_SELECTED, RES_UNSELECTED, 16, 32, 16, 32, false, false );
 
 	//maak een achtergrond label om alle andere widgets in op te slaan, en te tonen
-	Label* achtergrond = new Label(0,0,50,50, NULL);
+	Label* achtergrond = new Label(0, 0, screenWidth, screenHeight, NULL);
 
 	//maak een listbox met update en textueelknop
-	this->listBox = new ListBox();
-	//knop om data te updaten
-	this->updateKnop = new Button("update");
+	this->listBox = new ListBox(0, 0, screenWidth, 30, achtergrond, ListBox::LBO_HORIZONTAL, ListBox::LBA_LINEAR, true);
+	int listHeight = listBox->getHeight();
+	int listWidth = listBox->getWidth();
 
-	//knop om naar visueel te schakelen
-	this->textueelKnop = new Button();
+	//knop om data te updaten
+	this->updateKnop = new Label(0, 0, listWidth/2, listHeight, NULL, " Updaten", 0, font);
+	this->updateKnop->setSkin( this->skin );
+	listBox->add(updateKnop);
+
+	//knop om naar textueel te schakelen
+	this->textueelKnop = new Label(0, 0, listWidth/2, listHeight, NULL, " Textueel", 0, font);
+	this->textueelKnop->setSkin( this->skin );
+	listBox->add(textueelKnop);
 
 	//staafdiagram
 
@@ -37,20 +53,13 @@ VisueelScherm::VisueelScherm( WeerData* weerData )
 	//mak een nieuwe image met de placeholder
 	this->diagramImage = new Image( 0, 30, EXTENT_X( maGetScrSize() ), EXTENT_Y( maGetScrSize() ) - 30, achtergrond, true, true, this->diagramTekening );
 
-
 	this->setMain( achtergrond );
 }
-
-
-VisueelScherm::~VisueelScherm()
-{
-}
-
 
 void VisueelScherm::update()
 {
 	//update waarden vam weerdata
-	this.weerData->update();
+	this->weerData->update();`s
 
 	//stel draw target in op onze tekening
 	maSetDrawTarget( this->diagramTekening );
@@ -72,16 +81,11 @@ void VisueelScherm::update()
 	this->diagramImage->setResource( this->diagramTekening );
 }
 
-
-
 void VisueelScherm::setToggleScherm( Screen* toggleScherm )
 {
 	//switch naar andere scherm (textueel scherm)
 	this->toggleScherm = toggleScherm;
 }
-
-
-
 
 void VisueelScherm::pointerPressEvent( MAPoint2d maPoint )
 {
@@ -100,7 +104,6 @@ void VisueelScherm::pointerPressEvent( MAPoint2d maPoint )
 		this->updateKnop->setSelected( false );
 	}
 
-
 	//textueel knop is ingedrukt
 	if( this->textueelKnop->contains( point ) )
 	{
@@ -115,3 +118,4 @@ void VisueelScherm::pointerPressEvent( MAPoint2d maPoint )
 }
 
 
+VisueelScherm::~VisueelScherm(){}
