@@ -25,6 +25,7 @@ TextueelScherm::TextueelScherm( WeerData* weerData )
 
 	//maak een achtergrond label om alle andere widgets in op te slaan, en te tonen
 	Label* achtergrond = new Label(0, 0, 50, 50, NULL);
+	achtergrond->setBackgroundColor(0xffffff);
 
 	//maak een listbox waar update en visueelknop aan toegevoegd worden
 	this->listBox = new ListBox(0, 0, screenWidth, 30, achtergrond, ListBox::LBO_HORIZONTAL, ListBox::LBA_LINEAR, true);
@@ -47,16 +48,16 @@ TextueelScherm::TextueelScherm( WeerData* weerData )
 
 
 	//info label
-	this->weerInfo = new Label(0,0,weerDataLabel->getWidth(),30,weerDataLabel,"Data: ../../..", 0, font);
+	this->weerInfo = new Label(0,0,weerDataLabel->getWidth(),30, weerDataLabel,"Data: ../../..", 0, font);
 
 	//zonneschijn label
-	this->weerInfoZon = new Label(0,40,weerDataLabel->getWidth(),30,weerDataLabel,"Zonneschijn: ../../..", 0, font);
+	this->weerInfoZon = new Label(0,40,weerDataLabel->getWidth(),30, weerDataLabel,"Zonneschijn: ../../..", 0, font);
 
 	//neerslag label
-	this->weerInfoNeerslag = new Label(0,80,weerDataLabel->getWidth(),30,weerDataLabel,"Neerslag: ../../..", 0, font);
+	this->weerInfoNeerslag = new Label(0,80,weerDataLabel->getWidth(),30, weerDataLabel,"Neerslag: ../../..", 0, font);
 
 	//minimum temperatuur label
-	this->weerInfoMintemp = new Label(0,120,weerDataLabel->getWidth(),30,weerDataLabel,"Min. temperatuur: ../../..", 0, font);
+	this->weerInfoMintemp = new Label(0,120,weerDataLabel->getWidth(),30, weerDataLabel,"Min. temperatuur: ../../..", 0, font);
 
 	//stel achtergrond label in als main widget, en maakt alles zichtbaar
 	this->setMain(achtergrond);
@@ -72,16 +73,16 @@ void TextueelScherm::toonWeerData()
 	this->weerInfo->setCaption( data );
 
 	//stel tekst in voor zonneschijn label
-	sprintf( data, "Zonneschijn: %i%%	/ %i%% / %i%%", weerData->zonneschijn[0], weerData->zonneschijn[1], weerData->zonneschijn[2] );
+	sprintf( data, "Zonneschijn: %i%% / %i%% / %i%%", weerData->zonneschijn[0], weerData->zonneschijn[1], weerData->zonneschijn[2] );
 	this->weerInfoZon->setCaption( data );
 
 	//stel tekst in voor neerslag label
-	sprintf( data, "Neerslag: %i%%   / %i%% / %i%%", weerData->neerslag[0], weerData->neerslag[1], weerData->neerslag[2] );
+	sprintf( data, "Neerslag: %i%% / %i%% / %i%%", weerData->neerslag[0], weerData->neerslag[1], weerData->neerslag[2] );
 	this->weerInfoNeerslag->setCaption(data);
 
 	//stel tekst in voor minimum temperatuur label
-	sprintf( data, "Neerslag: %i%%   / %i%% / %i%%", weerData->minimumtemperatuur[0], weerData->minimumtemperatuur[1], weerData->minimumtemperatuur[2] );
-	this->weerInfoNeerslag->setCaption(data);
+	sprintf( data,  "Min. temperatuur: %i%s / %i%s / %i%s", weerData->minimumtemperatuur[0],"C", weerData->minimumtemperatuur[1],"C", weerData->minimumtemperatuur[2],"C");
+	this->weerInfoMintemp->setCaption(data);
 }
 
 void TextueelScherm::setToggleScherm( Screen* toggleScherm )
@@ -105,10 +106,14 @@ void TextueelScherm::pointerPressEvent( MAPoint2d maPoint )
 
 	//update knop is ingedrukt
 	if( this->updateKnop->contains( point ) )
+	{
 		this->updateKnop->setSelected( true );
+		update();
+	}
 	else
+	{
 		this->updateKnop->setSelected( false );
-
+	}
 
 	//visueel knop is ingedrukt
 	if( visueelKnop->contains( point ) )

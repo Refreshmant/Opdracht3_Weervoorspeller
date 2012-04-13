@@ -56,29 +56,127 @@ VisueelScherm::VisueelScherm( WeerData* weerData )
 	this->setMain( achtergrond );
 }
 
+/**
+ * met dan aan iwan, en tevens met zijn toestemming
+ */
 void VisueelScherm::update()
 {
+	//Offsets
+	int offy = 5;
+	int offx = 5;
+
+	//Zet buffer voor tekst
+	char data[500];
+
 	//update waarden vam weerdata
-	this->weerData->update();`s
+	this->weerData->update();
 
 	//stel draw target in op onze tekening
 	maSetDrawTarget( this->diagramTekening );
 
-	//teken een staaf diagram
+	//Defineer de kleur
+	maSetColor(0xffffff);
 
-	//legenda
-	//teken blokje en text met zonneschijn, neerslag en temperatuur
+	/**
+	 * zon
+	 */
+	//Tekent tekst van zonneschijn
+	maDrawText(offx, offy, "Zonneschijn (max 100%)");
+	offy+=20;
 
-	//teken 10-stap lijnen
+	//Vult extra informatie naast de grafiek
+	sprintf( data, "%i%% / %i%% / %i%%", weerData->zonneschijn[0], weerData->zonneschijn[1], weerData->zonneschijn[2]);
 
-	//teken de staven van zonneschijn, neerslag en minimum temperatuur
+	//Tekent extra informatie
+	maDrawText(offx+105, offy+5, data);
 
+	//Teken de grafiek
+	maLine(offx,offy,offx+100,offy);
+	maLine(offx,offy,offx,offy+25);
+	offy+=3;
 
-	//altijd draw target na tekenen teruggeven naar scherm!
+	//Tekenen de balken van de zonnenschijn
+	maFillRect(offx, offy, weerData->zonneschijn[0], 5);
+	offy+=7;
+	maFillRect(offx, offy, weerData->zonneschijn[1], 5);
+	offy+=7;
+	maFillRect(offx, offy, weerData->zonneschijn[2], 5);
+	offy+=20;
+
+	/**
+	 * neerslag
+	 */
+	//Tekent tekst van neerslag
+	maDrawText(offx, offy, "Neerslag (max 100%)");
+	offy+=20;
+
+	//Vult extra informatie naast de grafiek
+	sprintf( data, "%i%% / %i%% / %i%%", weerData->neerslag[0], weerData->neerslag[1], weerData->neerslag[2]);
+
+	//Tekent extra informatie
+	maDrawText(offx+105, offy+5, data);
+
+	//Teken de grafiek
+	maLine(offx, offy, offx+100, offy);
+	maLine(offx, offy, offx, offy+25);
+	offy+=3;
+
+	//Tekent de balken
+	maFillRect(offx, offy, weerData->neerslag[0], 5);
+	offy+=7;
+
+	maFillRect(offx, offy, weerData->neerslag[1], 5);
+	offy+=7;
+
+	maFillRect(offx, offy, weerData->neerslag[2], 5);
+	offy+=20;
+
+	/**
+	 * temperatuur
+	 */
+	//Tekent tekst van minimale temperatuur
+	maDrawText(offx, offy, "Min. temperatuur (min/max 25c)");
+	offy+=20;
+
+	//Vult extra informatie naast de grafiek
+	sprintf( data, "%i%s/%i%s/%i%s", weerData->minimumtemperatuur[0],"C", weerData->minimumtemperatuur[1],"C", weerData->minimumtemperatuur[2],"C");
+
+	//Tekent extra informatie
+	maDrawText(offx+105, offy+5, data);
+
+	//Teken de grafiek
+	maLine(offx, offy, offx+100, offy);
+	maLine(offx+50, offy, offx+50, offy+25);
+
+	//Tekenen van de de balken van temperatuur
+	offy+=3;
+
+	//Als de temperatuur negatief is, balken aan de negatieve zijde tekenen
+	if(weerData->minimumtemperatuur[0]>0)
+		maFillRect(offx+50, offy, weerData->minimumtemperatuur[0]*2, 5);
+	else
+		maFillRect(offx+50+weerData->minimumtemperatuur[0]*2, offy, weerData->minimumtemperatuur[0]*2, 5);
+
+	offy+=7;
+	//Als de temperatuur negatief is, balken aan de negatieve zijde tekenen
+	if(weerData->minimumtemperatuur[1]>0)
+		maFillRect(offx+50, offy, weerData->minimumtemperatuur[1]*2, 5);
+	else
+		maFillRect(offx+50+weerData->minimumtemperatuur[1]*2, offy, weerData->minimumtemperatuur[1]*2, 5);
+
+	offy+=7;
+	//Als de temperatuur negatief is, balken aan de negatieve zijde tekenen
+	if(weerData->minimumtemperatuur[2]>0)
+		maFillRect(offx+50, offy, weerData->minimumtemperatuur[2]*2, 5);
+	else
+		maFillRect(offx+50+weerData->minimumtemperatuur[2]*2, offy, weerData->minimumtemperatuur[2]*2, 5);
+
+	// Draw target na tekenen teruggeven naar scherm!
 	maSetDrawTarget( HANDLE_SCREEN );
 
 	//update de image met de nieuwe tekening
 	this->diagramImage->setResource( this->diagramTekening );
+
 }
 
 void VisueelScherm::setToggleScherm( Screen* toggleScherm )
@@ -116,6 +214,5 @@ void VisueelScherm::pointerPressEvent( MAPoint2d maPoint )
 		this->textueelKnop->setSelected( false );
 	}
 }
-
 
 VisueelScherm::~VisueelScherm(){}
